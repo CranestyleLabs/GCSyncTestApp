@@ -80,7 +80,7 @@ static Lobby* sharedInstance;
     newGame = nil;
     newGame = [[Game alloc] init];
     [newGame setGameId:arc4random()];
-    [self findMatchWithMinPlayers:2 maxPlayers:2 viewController:delegate.navController];
+    [self findMatchWithMinPlayers:3 maxPlayers:3 viewController:delegate.navController];
 }
 
 -(void)refreshActiveGamesList
@@ -190,10 +190,12 @@ static Lobby* sharedInstance;
 // A peer-to-peer match has been found, the game should start
 - (void)matchmakerViewController:(GKMatchmakerViewController*)viewController didFindMatch:(GKMatch*)theMatch
 {
+    CCLOG(@"matchmaker view controller did find match.");
     [presentingViewController dismissModalViewControllerAnimated:YES];
     newGame.match = theMatch;
     newGame.match.delegate = self;
-    if (/*!matchStarted &&*/ newGame.match.expectedPlayerCount == 0)
+    CCLOG(@"expected player count: %d", newGame.match.expectedPlayerCount);
+    if (newGame.match.expectedPlayerCount == 0)
     {
         NSLog(@"Ready to start match!");
         
@@ -202,20 +204,8 @@ static Lobby* sharedInstance;
         NSLog(@"Sending gameid...");
         NSError* error;
         GameMessage* gameMessage = [[GameMessage alloc] initWithGameId:[newGame getGameId] andType:GAME_MESSAGE_SYNC_GAMEID];
-//        NSMutableData* data = [NSMutableData data];
-//        NSKeyedArchiver* archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-//        [archiver encodeObject:gameMessage forKey:@"GAME_MESSAGE"];
-//        [archiver finishEncoding];
         NSData* data = [self archiveMessage:gameMessage];
         [newGame.match sendDataToAllPlayers:data withDataMode:GKMatchSendDataReliable error:&error];
-        
-//        GameMessage* gameMessage = [[GameMessage alloc] initWithGameId:[newGame getGameId] andType:GAME_MESSAGE_SYNC_GAMEID];
-//        NSData* messageData = [NSData dataWithBytes:&gameMessage length:sizeof(gameMessage)];
-//        [newGame.match sendDataToAllPlayers:messageData withDataMode:GKMatchSendDataUnreliable error:&error];
-//        if (error != nil)
-//        {
-//            NSLog(@"%@", error.description);
-//        }
     }
 }
 - (void)matchmakerViewControllerWasCancelled:(GKMatchmakerViewController*)viewController
@@ -312,7 +302,7 @@ static Lobby* sharedInstance;
 // The player state changed (eg. connected or disconnected)
 - (void)match:(GKMatch*)theMatch player:(NSString*)playerID didChangeState:(GKPlayerConnectionState)state
 {
-    
+    CCLOG(@"match did change state (to :%d)", state);
     switch (state)
     {
             
@@ -321,7 +311,7 @@ static Lobby* sharedInstance;
             // handle a new player connection.
             NSLog(@"Player connected!");
             
-            if (/*!matchStarted &&*/ theMatch.expectedPlayerCount == 0)
+            if (theMatch.expectedPlayerCount == 0)
             {
                 NSLog(@"All players have joined!");
             }
