@@ -80,7 +80,7 @@ static Lobby* sharedInstance;
     newGame = nil;
     newGame = [[Game alloc] init];
     [newGame setGameId:arc4random()];
-    [self findMatchWithMinPlayers:3 maxPlayers:3 viewController:delegate.navController];
+    [self findMatchWithMinPlayers:2 maxPlayers:3 viewController:delegate.navController];
 }
 
 -(void)refreshActiveGamesList
@@ -193,6 +193,7 @@ static Lobby* sharedInstance;
     CCLOG(@"matchmaker view controller did find match.");
     [presentingViewController dismissModalViewControllerAnimated:YES];
     newGame.match = theMatch;
+    [newGame addPlayersForIDSync:newGame.match.playerIDs];
     newGame.match.delegate = self;
     CCLOG(@"expected player count: %d", newGame.match.expectedPlayerCount);
     if (newGame.match.expectedPlayerCount == 0)

@@ -111,18 +111,13 @@ static CCScene* scene;
     [playersDict setObject:player forKey:playerId];
 }
 
+-(void)addPlayersForIDSync:(NSArray*)playerIDs
+{   
+    gameIdSyncPlayersArray = [playerIDs mutableCopy];
+}
+
 -(void)receiveGameIdSyncMessageFromPlayerId:(NSString*)thisPlayerId withGameId:(int)theGameId
-{
-    
-    if (!gameIdSyncPlayersArray)
-    {
-        gameIdSyncPlayersArray = [[NSMutableArray alloc] initWithCapacity:playersDict.count];
-        for (NSString* key in playersDict)
-        {
-            [gameIdSyncPlayersArray addObject:key];
-        }
-    }
-    
+{   
     [self setGameId: (theGameId > [self getGameId] ? theGameId : [self getGameId])];
     CCLOG(@"Game id set to %d", gameId);
     

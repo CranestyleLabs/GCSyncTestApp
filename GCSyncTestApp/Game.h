@@ -35,6 +35,7 @@ typedef enum
 -(CCScene*)scene;
 
 -(void)addPlayer:(id)player withId:(NSString*)playerId;
+-(void)addPlayersForIDSync:(NSArray*)playerIDs;
 -(void)receiveGameIdSyncMessageFromPlayerId:(NSString*)thisPlayerId withGameId:(int)theGameId;
 
 -(int)getGameId;
