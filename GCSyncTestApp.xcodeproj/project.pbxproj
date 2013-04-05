@@ -1139,7 +1139,7 @@
 				GCC_PREFIX_HEADER = GCSyncTestApp/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"GCSyncTestApp/libs/kazmath/include\"";
 				INFOPLIST_FILE = GCSyncTestApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",
@@ -1162,7 +1162,7 @@
 				GCC_PREFIX_HEADER = GCSyncTestApp/Prefix.pch;
 				HEADER_SEARCH_PATHS = "\"GCSyncTestApp/libs/kazmath/include\"";
 				INFOPLIST_FILE = GCSyncTestApp/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-ObjC",

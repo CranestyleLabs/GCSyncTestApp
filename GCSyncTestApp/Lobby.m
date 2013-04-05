@@ -80,7 +80,7 @@ static Lobby* sharedInstance;
     newGame = nil;
     newGame = [[Game alloc] init];
     [newGame setGameId:arc4random()];
-    [self findMatchWithMinPlayers:2 maxPlayers:3 viewController:delegate.navController];
+    [self findMatchWithMinPlayers:3 maxPlayers:3 viewController:delegate.navController];
 }
 
 -(void)refreshActiveGamesList
