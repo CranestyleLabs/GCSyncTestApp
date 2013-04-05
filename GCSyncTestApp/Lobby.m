@@ -287,12 +287,17 @@ static Lobby* sharedInstance;
     else if (gameMessage.type == GAME_MESSAGE_QUIT)
     {
         CCLOG(@"%@ quit game %d", playerID, gameMessage.gameId);
+        Game* gameToRemove;
         for (NSNumber* key in activeGames)
         {
             if ([key intValue] == gameMessage.gameId)
             {
-                [self removeGame:[activeGames objectForKey:key]];
+                gameToRemove = [activeGames objectForKey:key];
             }
+        }
+        if (gameToRemove != nil)
+        {
+            [self removeGame:gameToRemove];
         }
     }
     
