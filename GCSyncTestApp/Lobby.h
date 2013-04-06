@@ -30,5 +30,9 @@
 
 
 +(CCScene*)scene;
++(Lobby*)sharedLobby;
+
+-(void)matchStarted;
+-(void)matchEnded;
 
 @end

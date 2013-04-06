@@ -200,7 +200,7 @@ static Lobby* sharedInstance;
     {
         NSLog(@"Ready to start match!");
         
-        [self lookupPlayersForGame:newGame];
+//        [self lookupPlayersForGame:newGame];
         
         NSLog(@"Sending gameid...");
         NSError* error;

@@ -7,6 +7,7 @@
 //
 
 #import "Game.h"
+#import "Lobby.h"
 
 
 
@@ -114,6 +115,7 @@ static CCScene* scene;
 -(void)addPlayersForIDSync:(NSArray*)playerIDs
 {   
     gameIdSyncPlayersArray = [playerIDs mutableCopy];
+    [self lookupPlayerAliases];
 }
 
 -(void)receiveGameIdSyncMessageFromPlayerId:(NSString*)thisPlayerId withGameId:(int)theGameId
@@ -143,6 +145,36 @@ static CCScene* scene;
     }
     
 }
+
+- (void)lookupPlayerAliases
+{
+    
+    NSLog(@"Looking up %d players...", self.match.playerIDs.count);
+    [GKPlayer loadPlayersForIdentifiers:self.match.playerIDs withCompletionHandler:^(NSArray *players, NSError *error) {
+        
+        if (error != nil)
+        {
+            NSLog(@"Error retrieving player info: %@", error.localizedDescription);
+            [[Lobby sharedLobby] matchEnded];
+        }
+        else
+        {
+            
+            // Populate players dict
+            for (GKPlayer *player in players)
+            {
+                NSLog(@"Found player: %@ [%@]", player.alias, player.playerID);
+                [self addPlayer:player withId:player.playerID];
+            }
+            
+            // Notify delegate match can begin
+            [[Lobby sharedLobby] matchStarted];
+            
+        }
+    }];
+    
+}
+
 
 -(int)getGameId
 {
