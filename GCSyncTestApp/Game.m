@@ -85,6 +85,7 @@ static CCScene* scene;
     for (NSString* key in playersDict)
     {
         GKPlayer* player = [playersDict objectForKey:key];
+        CCLOG(@"setting up player menu item for %@", player.alias);
         PlayerMenuItem* pmi = [[PlayerMenuItem alloc] initWithGame:self andWithPlayerID:key andWithPlayerAlias:player.alias];
         [pmi setPosition:ccpAdd(start, ccp(pmi.contentSize.width, pmi.contentSize.height))];
         [playerListLayer addChild:pmi];
