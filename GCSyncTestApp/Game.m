@@ -191,6 +191,8 @@ static CCScene* scene;
                 NSLog(@"Found player: %@ [%@]", player.alias, player.playerID);
                 [self addPlayer:player withId:player.playerID];
             }
+            // setup players menu
+            [self setupPlayersMenu];
             
             // Notify delegate match can begin
             [[Lobby sharedLobby] matchStarted];
