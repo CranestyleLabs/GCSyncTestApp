@@ -81,14 +81,24 @@ static CCScene* scene;
 
 -(void)setupPlayersMenu
 {
-    CGPoint start  = ccp(playerListLayer.contentSize.width/2, playerListLayer.contentSize.height/2);
+    CGPoint start  = ccp(playerListLayer.contentSize.width/2, playerListLayer.contentSize.height);
+    int i = 0;
     for (NSString* key in playersDict)
     {
         GKPlayer* player = [playersDict objectForKey:key];
         CCLOG(@"setting up player menu item for %@", player.alias);
         PlayerMenuItem* pmi = [[PlayerMenuItem alloc] initWithGame:self andWithPlayerID:key andWithPlayerAlias:player.alias];
-        [pmi setPosition:ccpAdd(start, ccp(pmi.contentSize.width, pmi.contentSize.height))];
-        [playerListLayer addChild:pmi];
+        [pmi setPosition:ccpAdd(start, ccp(pmi.contentSize.width * i, pmi.contentSize.height * i))];
+        [self addChild:pmi z:2];
+        i++;
+    }
+    for (CCNode* node in self.children)
+    {
+        if ([node isKindOfClass:[PlayerMenuItem class]])
+        {
+            PlayerMenuItem* pmi = (PlayerMenuItem*)node;
+            CCLOG(@"player menu item for %@ located at %@", [pmi getPlayerAlias], NSStringFromCGPoint(pmi.position));
+        }
     }
 }
 

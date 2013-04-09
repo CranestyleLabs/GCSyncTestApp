@@ -19,7 +19,7 @@
         gameObject = game;
         playerID = pid;
         playerAlias = alias;
-        [self setAnchorPoint:ccp(0,0)];
+        [self setAnchorPoint:ccp(0.5, 0.5)];
         
         int borderWidth = 2;
         int itemHeight = 75;
@@ -39,7 +39,7 @@
         [indicator setScaleX:self.contentSize.height/2];
         [indicator setScaleY:self.contentSize.height/2];
         [indicator setColor:ccGREEN];
-        [indicator setPosition:ccp(100, self.contentSize.height/2)];
+        [indicator setPosition:ccp(50, self.contentSize.height/2)];
         
         [self createMenu];
         [self addChild:aliasLabel];
@@ -61,36 +61,35 @@
 
 -(void)createMenu
 {
-    buttonReinvite = [CCMenuItemFont itemWithString:[NSString stringWithFormat:@"Re-invite"] target:self selector:@selector(launchGame)];
-    [buttonReinvite setColor:ccBLACK];
-    [buttonReinvite setIsEnabled:NO];
+    buttonReinvite = [CCMenuItemFont itemWithString:[NSString stringWithFormat:@"Re-invite"] target:self selector:@selector(reinvitePlayer)];
 
     [buttonReinvite setFontSize:28.0f];
+    [buttonReinvite setDisabledColor:ccBLACK];
+    [buttonReinvite setColor:ccWHITE];
     
     CCMenu* menu = [CCMenu menuWithItems:buttonReinvite, nil];
     
     [menu alignItemsHorizontallyWithPadding:25];
-    [menu setPosition:ccp(self.contentSize.width - 25, self.contentSize.height/2)];
+    [menu setAnchorPoint:ccp(0.5, 1)];
+    [menu setPosition:ccp(self.contentSize.width - 100, self.contentSize.height/2)];
     [self addChild:menu];
+    
+    [buttonReinvite setIsEnabled:NO];
+    CCLOG(@"player menu item for %@ initialized.", playerAlias);
 }
 
 -(void)disconnected
 {
-    [buttonReinvite setColor:ccWHITE];
+    CCLOG(@"player menu item for %@ updated to disconnected.", playerAlias);
     [buttonReinvite setIsEnabled:YES];
     [indicator setColor:ccRED];
 }
 
 -(void)reconnected
 {
-    [buttonReinvite setColor:ccBLACK];
+    CCLOG(@"player menu item for %@ updated to connected.", playerAlias);
     [buttonReinvite setIsEnabled:NO];
     [indicator setColor:ccGREEN];
-}
-
--(void)reinvite
-{
-    CCLOG(@"Reinvite %@", playerAlias);
 }
 
 -(void)draw
@@ -102,6 +101,16 @@
 -(NSString*)getPlayerID
 {
     return playerID;
+}
+
+-(NSString*)getPlayerAlias
+{
+    return playerAlias;
+}
+
+-(void)reinvitePlayer
+{
+    CCLOG(@"reinvite player %@", playerAlias);
 }
 
 @end

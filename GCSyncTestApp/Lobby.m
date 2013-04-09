@@ -339,12 +339,19 @@ static Lobby* sharedInstance;
                 Game* game = [activeGames objectForKey:key];
                 if (game.match == theMatch)
                 {
+                    CCLOG(@"found game for match.");
                     // get the player menu items for that game
-                    for (PlayerMenuItem* pmi in game.children)
+                    for (CCNode* node in game.children)
                     {
-                        if ([pmi getPlayerID] == playerID)
+                        if ([node isKindOfClass:[PlayerMenuItem class]])
                         {
-                            [pmi disconnected];
+                            PlayerMenuItem* pmi = (PlayerMenuItem*)node;
+                            CCLOG(@"found a player menu item for player id %@, looking for player id %@.", [pmi getPlayerID], playerID);
+                            if ([[pmi getPlayerID] isEqualToString:playerID])
+                            {
+                                CCLOG(@"pmi disconnected for %@", [pmi getPlayerAlias]);
+                                [pmi disconnected];
+                            }
                         }
                     }
                 }
@@ -402,6 +409,11 @@ static Lobby* sharedInstance;
     }
     
     [self refreshActiveGamesList];
+}
+
+-(void)reinvitePlayer:(NSString*)playerID
+{
+    
 }
 
 @end
