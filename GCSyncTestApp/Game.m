@@ -218,6 +218,11 @@ static CCScene* scene;
     return gameId;
 }
 
+-(NSMutableDictionary*)getPlayersDict
+{
+    return playersDict;
+}
+
 -(void)setGameId:(int)id
 {
     gameId = id;

@@ -35,4 +35,6 @@
 -(void)matchStarted;
 -(void)matchEnded;
 
+-(void)reinvitePlayersToGame:(Game*)game;
+
 @end

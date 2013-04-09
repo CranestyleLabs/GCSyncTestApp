@@ -32,6 +32,7 @@ typedef enum
 @property BOOL ready;
 @property GKMatch* match;
 @property gameState state;
+@property NSMutableArray* disconnectedPlayers;
 
 -(CCScene*)scene;
 
@@ -40,6 +41,7 @@ typedef enum
 -(void)receiveGameIdSyncMessageFromPlayerId:(NSString*)thisPlayerId withGameId:(int)theGameId;
 
 -(int)getGameId;
+-(NSMutableDictionary*)getPlayersDict;
 -(void)setGameId:(int)id;
 
 @end

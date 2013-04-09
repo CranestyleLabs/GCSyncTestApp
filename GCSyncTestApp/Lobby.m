@@ -351,6 +351,7 @@ static Lobby* sharedInstance;
                             {
                                 CCLOG(@"pmi disconnected for %@", [pmi getPlayerAlias]);
                                 [pmi disconnected];
+                                [game.disconnectedPlayers addObject:playerID];
                             }
                         }
                     }
@@ -411,9 +412,17 @@ static Lobby* sharedInstance;
     [self refreshActiveGamesList];
 }
 
--(void)reinvitePlayer:(NSString*)playerID
+-(void)reinvitePlayersToGame:(Game*)game
 {
+    // create new match request
+    GKMatchRequest* newMatchRequest = [[GKMatchRequest alloc] init];
+    int playersInMatch = game.match.playerIDs.count;
+    newMatchRequest.minPlayers = playersInMatch;
+    newMatchRequest.maxPlayers = playersInMatch;
+    newMatchRequest.playersToInvite = game.disconnectedPlayers;
     
+    // send request to players
+    [[GKMatchmaker sharedMatchmaker] addPlayersToMatch:game.match matchRequest:newMatchRequest completionHandler:nil];
 }
 
 @end

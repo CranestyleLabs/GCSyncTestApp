@@ -8,6 +8,8 @@
 
 #import "PlayerMenuItem.h"
 
+#import "Lobby.h"
+
 
 @implementation PlayerMenuItem
 
@@ -110,7 +112,8 @@
 
 -(void)reinvitePlayer
 {
-    CCLOG(@"reinvite player %@", playerAlias);
+    CCLOG(@"reinvite players");
+    [[Lobby sharedLobby] reinvitePlayersToGame:gameObject];
 }
 
 @end
