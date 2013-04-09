@@ -28,5 +28,6 @@ andWithPlayerAlias:(NSString*)alias;
 -(id)getGameObject;
 -(void)disconnected;
 -(void)reconnected;
+-(NSString*)getPlayerID;
 
 @end

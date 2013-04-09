@@ -99,4 +99,9 @@
     ccDrawRect(self.anchorPoint, ccp(self.contentSize.width, self.contentSize.height));
 }
 
+-(NSString*)getPlayerID
+{
+    return playerID;
+}
+
 @end

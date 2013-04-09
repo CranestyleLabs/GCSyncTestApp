@@ -9,6 +9,7 @@
 #import "Lobby.h"
 #import "Game.h"
 #import "GameMessage.h"
+#import "PlayerMenuItem.h"
 
 #import <GameKit/GameKit.h>
 
@@ -80,7 +81,7 @@ static Lobby* sharedInstance;
     newGame = nil;
     newGame = [[Game alloc] init];
     [newGame setGameId:arc4random()];
-    [self findMatchWithMinPlayers:3 maxPlayers:3 viewController:delegate.navController];
+    [self findMatchWithMinPlayers:2 maxPlayers:3 viewController:delegate.navController];
 }
 
 -(void)refreshActiveGamesList
@@ -330,7 +331,24 @@ static Lobby* sharedInstance;
             // a player just disconnected.
             NSLog(@"Player disconnected! (%@)", playerID);
 //            matchStarted = NO;
-            [self matchEnded];
+//            [self matchEnded];
+            
+            // figure out which game the player disconnected from
+            for (NSString* key in activeGames)
+            {
+                Game* game = [activeGames objectForKey:key];
+                if (game.match == theMatch)
+                {
+                    // get the player menu items for that game
+                    for (PlayerMenuItem* pmi in game.children)
+                    {
+                        if ([pmi getPlayerID] == playerID)
+                        {
+                            [pmi disconnected];
+                        }
+                    }
+                }
+            }
             break;
     }
     

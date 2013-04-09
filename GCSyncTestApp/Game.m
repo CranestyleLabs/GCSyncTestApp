@@ -8,6 +8,7 @@
 
 #import "Game.h"
 #import "Lobby.h"
+#import "PlayerMenuItem.h"
 
 
 
@@ -39,6 +40,12 @@ static CCScene* scene;
         gameId = -1;
         self.ready = NO;
         self.state = GAMESTATE_INIT;
+        
+        playerListLayer = [[CCLayerColor alloc] initWithColor:ccc4(255, 255, 255, 100)];
+        [playerListLayer setAnchorPoint:ccp(0,1)];
+        [playerListLayer setContentSize:CGSizeMake(winSize.width, winSize.height * 0.75)];
+        [playerListLayer setPosition:ccp(0, winSize.height - playerListLayer.contentSize.height)];
+        [self addChild:playerListLayer];
     }
     return self;
 }
@@ -60,6 +67,7 @@ static CCScene* scene;
     [super onEnter];
     [self setupButtons];
     [self setupStatusLabel];
+    [self refreshPlayerList];
 }
 
 -(void)setupStatusLabel
@@ -71,6 +79,18 @@ static CCScene* scene;
     [self addChild:statusLabel];
 }
 
+-(void)setupPlayersMenu
+{
+    CGPoint start  = ccp(playerListLayer.contentSize.width/2, playerListLayer.contentSize.height/2);
+    for (NSString* key in playersDict)
+    {
+        GKPlayer* player = [playersDict objectForKey:key];
+        PlayerMenuItem* pmi = [[PlayerMenuItem alloc] initWithGame:self andWithPlayerID:key andWithPlayerAlias:player.alias];
+        [pmi setPosition:ccpAdd(start, ccp(pmi.contentSize.width, pmi.contentSize.height))];
+        [playerListLayer addChild:pmi];
+    }
+}
+
 -(void)setupButtons
 {
     [self removeChild:menuReady];
@@ -80,6 +100,11 @@ static CCScene* scene;
     [menuReady alignItemsHorizontallyWithPadding:20];
     [menuReady setPosition:ccp(winSize.width/2, 150)];
     [self addChild:menuReady];
+}
+
+-(void)refreshPlayerList
+{
+//    [playerListLayer removeAllChildrenWithCleanup:YES];
 }
 
 -(void)clickedReadyButton
@@ -175,11 +200,11 @@ static CCScene* scene;
     
 }
 
-
 -(int)getGameId
 {
     return gameId;
 }
+
 -(void)setGameId:(int)id
 {
     gameId = id;

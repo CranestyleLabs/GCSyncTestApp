@@ -19,6 +19,7 @@
     int gameId;
     NSMutableDictionary* playersDict;
     NSMutableArray* gameIdSyncPlayersArray;
+    CCLayerColor* playerListLayer;
 }
 
 typedef enum
